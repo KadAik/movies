@@ -33,10 +33,14 @@ class Dev(Configuration):
 
     ALLOWED_HOSTS = []
 
+    # Ok for dev but not secure for production; instead OMDB_KEY = values.SecretValue()
+    # to set the key as environment variable before manage.py can start up
+    OMDB_KEY = "9b276c4b"
 
     # Application definition
 
     INSTALLED_APPS = [
+        'moviesapp.apps.MoviesappConfig',
         'django.contrib.admin',
         'django.contrib.auth',
         'django.contrib.contenttypes',
@@ -81,8 +85,12 @@ class Dev(Configuration):
 
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'moviesdb',
+            'USER': 'app',
+            'PASSWORD': '12345678',
+            'HOST': 'localhost',
+            'PORT': '5432',
         }
     }
 
@@ -127,5 +135,27 @@ class Dev(Configuration):
     # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
     DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+    LOGGING = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "verbose": {
+                "format": "{levelname} {asctime} {module} {process:d} {thread:d} {message}",
+                "style": "{",
+            },
+        },
+        "handlers": {
+            "console": {
+                "class": "logging.StreamHandler",
+                "stream": "ext://sys.stdout",
+                "formatter": "verbose",
+            }
+        },
+        "root": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+        },
+    }
 
 
