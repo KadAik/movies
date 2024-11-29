@@ -7,6 +7,8 @@ from django.utils.timezone import now
 from moviesapp.models import Genre, SearchTerm, Movie
 from omdb.django_client import get_client_from_settings
 
+from moviesapp import movie_filled
+
 logger = logging.getLogger(__name__)
 
 
@@ -38,6 +40,9 @@ def fill_movie_details(movie):
         movie.genres.add(genre)
     movie.is_full_record = True
     movie.save()
+
+    # Dispatch a signal if a movie details has benn filled for the first time
+    movie_filled.send(sender=fill_movie_details, movie=movie)
 
 
 def search_and_save(search):
