@@ -40,6 +40,7 @@ class Dev(Configuration):
     # Application definition
 
     INSTALLED_APPS = [
+        'django_celery_results',
         'gh.apps.GhConfig',
         'moviesapp.apps.MoviesappConfig',
         'django.contrib.admin',
@@ -158,5 +159,9 @@ class Dev(Configuration):
             "level": "DEBUG",
         },
     }
+
+    # Celery configuration
+    CELERY_BROKER_URL = "redis://localhost:6379/0"
+    CELERY_RESULT_BACKEND = "django-db"
 
 

@@ -21,5 +21,6 @@ from django.urls import include
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('gh/', include('gh.urls')),
+    path('moviesapp/', include('moviesapp.urls')),
 
 ]
